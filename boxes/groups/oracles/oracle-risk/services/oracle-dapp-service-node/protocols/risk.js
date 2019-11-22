@@ -7,8 +7,9 @@ const ALGORITHM_CVAR = 'cvar';
 
 // CVaR Methods
 const CVAR_METHODS = {
+  historical: undefined,    // not implemented yet
   montecarlo: 'portfolioMonteCarloVaR',
-  varcov: undefined     // not implemented yet
+  varcov:     undefined     // not implemented yet
 }
 
 module.exports = async ({ proto, address }) => {
@@ -19,13 +20,9 @@ module.exports = async ({ proto, address }) => {
   // Parse the address
   const [algorithm, method, rest] = address.split('/');
   const args = rest.split(';');
-  // TODO: parse parameters
 
   return new Promise((resolve, reject) => {
     console.log("address", address);
-
-    // TODO: Get price data
-    const data = [];
 
     // Select the algorithm function
     const riskCalc = riskCalcFunction(algorithm, method);
@@ -35,11 +32,24 @@ module.exports = async ({ proto, address }) => {
       return;
     }
 
-    // TODO: what to do with the args (parameters)?
+    // Check the correct number of arguments has been passed
+    if (args.length != 3) {
+      logger.error('invalid number of parameters: expected 3 and got ' + args.length);
+      resolve(Buffer.from('error'));
+      return;
+    }
+
+    // Parse parameters
+    const symbols = args[0].split(':');
+    const weights = args[1].split(':');
+    const alphatest = args[2];
+
+    // TODO: Get price data
+    const data = [];
 
     try {
       // Call the RiskJS lib
-      const result = riskjs[riskCalc](data);
+      const result = riskjs[riskCalc](data);    // TODO: pass other parameters?
 
       resolve(Buffer.from(result));
     }
