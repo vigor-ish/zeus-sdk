@@ -35,15 +35,14 @@ describe(`Risk Oracle Service Test`, () => {
   it('Risk invalid url', done => {
     (async () => {
       try {
-        var res = await testcontract.testrnd({
+        var res = await testcontract.testget({
           uri: Buffer.from(`risk://win/lottery/`, 'utf8'),
+          expectedfield: Buffer.from("error"),
         }, {
           authorization: `${code}@active`,
           broadcast: true,
           sign: true
         });
-        //assert.equal();
-        console.log(res);
         done();
       }
       catch (e) {
@@ -62,8 +61,6 @@ describe(`Risk Oracle Service Test`, () => {
           broadcast: true,
           sign: true
         });
-        //assert.equal();
-        console.log(res);
         done();
       }
       catch (e) {
@@ -82,8 +79,6 @@ describe(`Risk Oracle Service Test`, () => {
           broadcast: true,
           sign: true
         });
-        //assert.equal();
-        console.log(res);
         done();
       }
       catch (e) {
