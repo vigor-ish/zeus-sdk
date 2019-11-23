@@ -38,7 +38,102 @@ describe(`Risk Oracle Service Test`, () => {
     (async () => {
       try {
         var res = await testcontract.testget({
-          uri: Buffer.from(`risk://win/lottery/${urlArgs}`, 'utf8'),
+          uri: Buffer.from(`risk://win/lottery/`, 'utf8'),
+          expectedfield: Buffer.from("error"),
+        }, {
+          authorization: `${code}@active`,
+          broadcast: true,
+          sign: true
+        });
+        done();
+      }
+      catch (e) {
+        done(e);
+      }
+    })();
+  });
+
+  it('Risk invalid number of params', done => {
+    (async () => {
+      try {
+        var res = await testcontract.testget({
+          uri: Buffer.from(`risk://cvar/historical/a;b`, 'utf8'),
+          expectedfield: Buffer.from("error"),
+        }, {
+          authorization: `${code}@active`,
+          broadcast: true,
+          sign: true
+        });
+        done();
+      }
+      catch (e) {
+        done(e);
+      }
+    })();
+  });
+
+  it('Risk invalid number of symbols', done => {
+    (async () => {
+      try {
+        var res = await testcontract.testget({
+          uri: Buffer.from(`risk://cvar/historical/EOS:DAPP:IQ;0.5:0.5;0.95`, 'utf8'),
+          expectedfield: Buffer.from("error"),
+        }, {
+          authorization: `${code}@active`,
+          broadcast: true,
+          sign: true
+        });
+        done();
+      }
+      catch (e) {
+        done(e);
+      }
+    })();
+  });
+
+  it('Risk invalid number of weights', done => {
+    (async () => {
+      try {
+        var res = await testcontract.testget({
+          uri: Buffer.from(`risk://cvar/historical/EOS:DAPP;0.2:0.3:0.5;0.95`, 'utf8'),
+          expectedfield: Buffer.from("error"),
+        }, {
+          authorization: `${code}@active`,
+          broadcast: true,
+          sign: true
+        });
+        done();
+      }
+      catch (e) {
+        done(e);
+      }
+    })();
+  });
+
+  it('Risk invalid sum of weights', done => {
+    (async () => {
+      try {
+        var res = await testcontract.testget({
+          uri: Buffer.from(`risk://cvar/historical/EOS:DAPP;0.2:0.5;0.95`, 'utf8'),
+          expectedfield: Buffer.from("error"),
+        }, {
+          authorization: `${code}@active`,
+          broadcast: true,
+          sign: true
+        });
+        done();
+      }
+      catch (e) {
+        done(e);
+      }
+    })();
+  });
+
+  it('Risk invalid alphatest', done => {
+    (async () => {
+      try {
+        var res = await testcontract.testget({
+          uri: Buffer.from(`risk://cvar/historical/EOS:DAPP;0.5:0.5;2.95`, 'utf8'),
           expectedfield: Buffer.from("error"),
         }, {
           authorization: `${code}@active`,

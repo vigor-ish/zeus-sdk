@@ -47,13 +47,38 @@ module.exports = async ({ proto, address }) => {
     const alphatest = args[2];
     logger.info('alphatest ' + alphatest)
 
+    // Require the number of symbols/weights to be 2 for now
+    // TODO: Remove in the future after getting getPrices to any number of symbols
+    if (symbols.length != 2 || weights.length != 2) {
+      logger.error('invalid number of symbols/weights: expected 2/2 and got ' + symbols.length + '/' + weights.length);
+      resolve(Buffer.from('error'));
+      return;
+    }
 
-    logger.info('Getting prices')
+    // Verify the weights sum to 1
+    const totalWeight = weights.reduce((s, n) => s + n, 0);
+    if (totalWeight != 1) {
+      logger.error('invalid weight distribution: expected sum to be 1 and got ' + totalWeight);
+      resolve(Buffer.from('error'));
+      return;
+    }
+
+    // Verify alphatest is a number between 0 and 1
+    if (alphatest < 0 || alphatest > 1) {
+      logger.error('invalid alphatest: expected 0..1 and got ' + totalWeight);
+      resolve(Buffer.from('error'));
+      return;
+    }
+
+    // Get the price feeds
+    // TODO: Make the routine work with any number of symbols
+    // logger.info('Getting prices')
     const data = await getPrices(symbols[0], symbols[1]);
-    logger.info('price data ' + data)
+    // logger.info('price data ' + data)
+
     try {
       // Call the RiskJS lib
-      const result = riskjs[riskCalc](data);    // TODO: pass other parameters?
+      const result = riskjs[riskCalc](data, weights, alphatest);
       logger.info('VaR is ' + result)
       resolve(Buffer.from(result));
     }
