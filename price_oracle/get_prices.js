@@ -1,9 +1,9 @@
 // this is to support both browser and node
 var SDK = typeof window !== 'undefined' ? window.COIN_API_SDK : require("./coinapi_v1")["default"]
 var sdk = new SDK("F52EAA2C-9BBB-42AA-BA33-94F5C9E02C8C")
-const fs = require('fs')
 
-async function run(tokenA, tokenB) {
+const getPrices = async function (tokenA, tokenB) {
+//async function getPrices (tokenA, tokenB) {
   let now = new Date(); // current time and date
   let lastYear = new Date() // temporary initialization of our last year's date
   var oneYrAgo = lastYear.getFullYear() - 1 // get last year's actual year
@@ -78,8 +78,9 @@ async function run(tokenA, tokenB) {
     })
     return prepend.concat(result.slice(1))
   });
-  fs.writeFile('./output.json', JSON.stringify(res, null, 2),'utf8' , function(err, data) {
-    if (err) { console.log(err); } else { console.log("data written"); }
-  });
+
+  return res
 }
-run('EOS', 'DAPP')
+//getPrices(symbols[0], symbols[1]);
+
+module.exports = { getPrices }
