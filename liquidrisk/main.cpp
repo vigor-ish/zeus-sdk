@@ -49,8 +49,6 @@ CONTRACT_START()
       // TODO: work on population of the vector and erasion of elements within the vector
      
 
-      typedef eosio::singleton<"stat"_n, stat> stats_def;
-
       bool timer_callback(name timer, std::vector<char> payload, uint32_t seconds){
           return false;
       }
