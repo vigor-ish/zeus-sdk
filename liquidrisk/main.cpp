@@ -45,59 +45,44 @@ using namespace eosio;
 CONTRACT_START()
 
       // globals
-     double alphatest = 0.95; // 0.95 for 95% CVaR
+      // double alphatest = 0.95; // 0.95 for 95% CVaR
+      // TODO: work on population of the vector and erasion of elements within the vector
      
-     // a URI string
-     string uriStr = "risk://cvar/montecarlo/EOS:IQ;0.5:0.5;0.95";
-
-
-      TABLE stat {
-          uint64_t   counter = 0;
-      };
 
       typedef eosio::singleton<"stat"_n, stat> stats_def;
 
       bool timer_callback(name timer, std::vector<char> payload, uint32_t seconds){
-
-        stats_def statstable(_self, _self.value);
-        stat newstats;
-        if(!statstable.exists()){
-          statstable.set(newstats, _self);
-        }
-        else{
-          newstats = statstable.get();
-        }
-        auto reschedule = false;
-        if(newstats.counter++ < 3){
-          reschedule = true;
-        }
-        statstable.set(newstats, _self);
-        return reschedule;
-        // reschedule
-
+          return false;
       }
+
      [[eosio::action]] void testschedule() {
         std::vector<char> payload;
         schedule_timer(_self, payload, 2);
       }
 
+      struct uri_string {
+          // a URI string with hardcoded parameters
+          string uriStr = "risk://cvar/montecarlo/EOS:IQ;0.5:0.5;0.95";
+      };
 
 
-      TABLE account {
+
+      TABLE users_s {
          name user;
          asset balance;
+         string CVaR;
          vector<asset> coll_basket; // a basket of diverse tokens
          uint64_t primary_key()const { return balance.contract.value; }
       };
 
-      typedef dapp::multi_index<"vaccounts"_n, account> cold_accounts_t;
-      typedef eosio::multi_index<".vaccounts"_n, account> cold_accounts_t_v_abi;
+      typedef dapp::multi_index<"vaccounts"_n, users_s> users_table;
+      typedef eosio::multi_index<".vaccounts"_n, users_s> users_table_t_v_abi;
       TABLE shardbucket {
           std::vector<char> shard_uri;
           uint64_t shard;
           uint64_t primary_key() const { return shard; }
       };
-      typedef eosio::multi_index<"vaccounts"_n, shardbucket> cold_accounts_t_abi;
+      typedef eosio::multi_index<"vaccounts"_n, shardbucket> users_table_t_abi;
 
 
      [[eosio::action]] void withdraw( name to, name token_contract){
@@ -125,10 +110,32 @@ CONTRACT_START()
           require_recipient(to_act);
           from = to_act;
         }
-        extended_asset received(quantity, get_first_receiver());
+        asset received(quantity, get_first_receiver());
         add_cold_balance(from, received);
      }
+ 
 
+      // the getCVaR function is passed a default value
+      string getCVaR(string uri_str){
+             std::vector<char> uri = std::vector<char>(uri_str.begin(), uri_str.end());
+             getURI(uri, [&](auto& results){
+                res = string( results[0].result.begin(), results[0].result.end() );
+                return results[0].result;
+          });
+      }
+      
+      // this action updates the CVaR value
+      ACTION setCVaR(){
+        uri_struct uri_;
+        auto _cvar = getCVaR(uri_.uriStr);
+        user_table _user( _self, _self.value );
+        auto itr = _user.find( _self.value );
+        _user.modify(itr, eosio::same_payer, [&](auto &s) { 
+            s.CVaR = _cvar; 
+          }); 
+      }
+
+      
    private:
       asset sub_all_cold_balance( name owner, name token_contract){
            cold_accounts_t from_acnts( _self, owner.value );
