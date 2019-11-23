@@ -1,5 +1,5 @@
 const logger = require('../../../extensions/helpers/logger');
-
+const { getPrices } = require('../get_prices')
 let riskjs;
 
 // Algorithms
@@ -21,7 +21,7 @@ module.exports = async ({ proto, address }) => {
   const [algorithm, method, rest] = address.split('/');
   const args = rest.split(';');
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     console.log("address", address);
 
     // Select the algorithm function
@@ -41,16 +41,20 @@ module.exports = async ({ proto, address }) => {
 
     // Parse parameters
     const symbols = args[0].split(':');
+    logger.info('Symbols ' + symbols)
     const weights = args[1].split(':');
+    logger.info('weights ' + weights)
     const alphatest = args[2];
+    logger.info('alphatest ' + alphatest)
 
-    // TODO: Get price data
-    const data = [];
 
+    logger.info('Getting prices')
+    const data = await getPrices(symbols[0], symbols[1]);
+    logger.info('price data ' + data)
     try {
       // Call the RiskJS lib
       const result = riskjs[riskCalc](data);    // TODO: pass other parameters?
-
+      logger.info('VaR is ' + result)
       resolve(Buffer.from(result));
     }
     catch (e) {
