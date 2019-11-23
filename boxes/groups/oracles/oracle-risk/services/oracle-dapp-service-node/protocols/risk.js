@@ -42,9 +42,9 @@ module.exports = async ({ proto, address }) => {
     // Parse parameters
     const symbols = args[0].split(':');
     logger.info('Symbols ' + symbols)
-    const weights = args[1].split(':');
+    const weights = args[1].split(':').map(s => parseFloat(s));
     logger.info('weights ' + weights)
-    const alphatest = args[2];
+    const alphatest = parseFloat(args[2]);
     logger.info('alphatest ' + alphatest)
 
     // Require the number of symbols/weights to be 2 for now
