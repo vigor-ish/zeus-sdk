@@ -1,6 +1,6 @@
 // this is to support both browser and node
 var SDK = typeof window !== 'undefined' ? window.COIN_API_SDK : require("./coinapi_v1")["default"]
-var sdk = new SDK("98FB8CF7-6FB2-406F-A793-012FAD2A2E2B")
+var sdk = new SDK("F52EAA2C-9BBB-42AA-BA33-94F5C9E02C8C")
 const fs = require('fs')
 
 async function run(tokenA, tokenB) {
