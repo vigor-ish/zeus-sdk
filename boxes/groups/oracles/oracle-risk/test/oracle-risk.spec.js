@@ -32,12 +32,32 @@ describe(`Risk Oracle Service Test`, () => {
 
   var account = code;
 
+  const urlArgs = 'EOS:DAPP;0.5:0.5;0.95';
+
   it('Risk invalid url', done => {
     (async () => {
       try {
         var res = await testcontract.testget({
-          uri: Buffer.from(`risk://win/lottery/`, 'utf8'),
+          uri: Buffer.from(`risk://win/lottery/${urlArgs}`, 'utf8'),
           expectedfield: Buffer.from("error"),
+        }, {
+          authorization: `${code}@active`,
+          broadcast: true,
+          sign: true
+        });
+        done();
+      }
+      catch (e) {
+        done(e);
+      }
+    })();
+  });
+
+  it('Risk VaR Historical call', done => {
+    (async () => {
+      try {
+        var res = await testcontract.testrnd({
+          uri: Buffer.from(`risk://cvar/historical/${urlArgs}`, 'utf8'),
         }, {
           authorization: `${code}@active`,
           broadcast: true,
@@ -55,7 +75,7 @@ describe(`Risk Oracle Service Test`, () => {
     (async () => {
       try {
         var res = await testcontract.testrnd({
-          uri: Buffer.from(`risk://cvar/montecarlo/`, 'utf8'),
+          uri: Buffer.from(`risk://cvar/montecarlo/${urlArgs}`, 'utf8'),
         }, {
           authorization: `${code}@active`,
           broadcast: true,
@@ -73,7 +93,7 @@ describe(`Risk Oracle Service Test`, () => {
     (async () => {
       try {
         var res = await testcontract.testrnd({
-          uri: Buffer.from(`risk://cvar/varcov/`, 'utf8'),
+          uri: Buffer.from(`risk://cvar/varcov/${urlArgs}`, 'utf8'),
         }, {
           authorization: `${code}@active`,
           broadcast: true,

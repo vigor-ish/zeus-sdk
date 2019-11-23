@@ -7,7 +7,8 @@
   "dependencies":["oracle-dapp-service"],
   "install":{
     "npm":{
-      "riskjs": true
+      "riskjs": true,
+      "axios": true
     }
   }
 }
