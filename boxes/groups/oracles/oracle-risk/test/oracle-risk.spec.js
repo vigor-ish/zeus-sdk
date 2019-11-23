@@ -34,7 +34,7 @@ describe(`Risk Oracle Service Test`, () => {
 
   const urlArgs = 'EOS:DAPP;0.5:0.5;0.95';
 
-  it('Risk invalid url', done => {
+  it('With invalid url', done => {
     (async () => {
       try {
         var res = await testcontract.testget({
@@ -53,7 +53,7 @@ describe(`Risk Oracle Service Test`, () => {
     })();
   });
 
-  it('Risk invalid number of params', done => {
+  it('With invalid number of params', done => {
     (async () => {
       try {
         var res = await testcontract.testget({
@@ -72,7 +72,7 @@ describe(`Risk Oracle Service Test`, () => {
     })();
   });
 
-  it('Risk invalid number of symbols', done => {
+  it('With invalid number of symbols', done => {
     (async () => {
       try {
         var res = await testcontract.testget({
@@ -91,7 +91,7 @@ describe(`Risk Oracle Service Test`, () => {
     })();
   });
 
-  it('Risk invalid number of weights', done => {
+  it('With invalid number of weights', done => {
     (async () => {
       try {
         var res = await testcontract.testget({
@@ -110,7 +110,7 @@ describe(`Risk Oracle Service Test`, () => {
     })();
   });
 
-  it('Risk invalid sum of weights', done => {
+  it('With invalid sum of weights', done => {
     (async () => {
       try {
         var res = await testcontract.testget({
@@ -129,7 +129,7 @@ describe(`Risk Oracle Service Test`, () => {
     })();
   });
 
-  it('Risk invalid alphatest', done => {
+  it('With invalid alphatest', done => {
     (async () => {
       try {
         var res = await testcontract.testget({
@@ -148,7 +148,7 @@ describe(`Risk Oracle Service Test`, () => {
     })();
   });
 
-  it('Risk VaR Historical call', done => {
+  it('CVaR Historical computation', done => {
     (async () => {
       try {
         var res = await testcontract.testrnd({
@@ -166,7 +166,7 @@ describe(`Risk Oracle Service Test`, () => {
     })();
   });
 
-  it('Risk VaR Monte Carlo call', done => {
+  it('CVaR Monte Carlo computation', done => {
     (async () => {
       try {
         var res = await testcontract.testrnd({
@@ -184,7 +184,7 @@ describe(`Risk Oracle Service Test`, () => {
     })();
   });
 
-  it('Risk VaR Variance Covariance call', done => {
+  it('CVaR Variance Covariance computation', done => {
     (async () => {
       try {
         var res = await testcontract.testrnd({

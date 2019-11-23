@@ -7,9 +7,9 @@ const ALGORITHM_CVAR = 'cvar';
 
 // CVaR Methods
 const CVAR_METHODS = {
-  historical: undefined,    // not implemented yet
-  montecarlo: 'portfolioMonteCarloVaR',
-  varcov:     undefined     // not implemented yet
+  historical: 'CVaRHistorical',
+  montecarlo: 'CVaRMonteCarlo',
+  varcov:     'CVaRVarianceCovariance'
 }
 
 module.exports = async ({ proto, address }) => {
@@ -41,11 +41,11 @@ module.exports = async ({ proto, address }) => {
 
     // Parse parameters
     const symbols = args[0].split(':');
-    logger.info('Symbols ' + symbols)
+    logger.info('symbols: ' + symbols)
     const weights = args[1].split(':').map(s => parseFloat(s));
-    logger.info('weights ' + weights)
+    logger.info('weights: ' + weights)
     const alphatest = parseFloat(args[2]);
-    logger.info('alphatest ' + alphatest)
+    logger.info('alphatest: ' + alphatest)
 
     // Require the number of symbols/weights to be 2 for now
     // TODO: Remove in the future after getting getPrices to any number of symbols
@@ -65,21 +65,21 @@ module.exports = async ({ proto, address }) => {
 
     // Verify alphatest is a number between 0 and 1
     if (alphatest < 0 || alphatest > 1) {
-      logger.error('invalid alphatest: expected 0..1 and got ' + totalWeight);
+      logger.error('invalid alphatest: expected 0..1 and got ' + alphatest);
       resolve(Buffer.from('error'));
       return;
     }
 
     // Get the price feeds
     // TODO: Make the routine work with any number of symbols
-    // logger.info('Getting prices')
+    logger.info('getting prices...');
     const data = await getPrices(symbols[0], symbols[1]);
-    // logger.info('price data ' + data)
+    logger.info('price data: ' + data);
 
     try {
       // Call the RiskJS lib
       const result = riskjs[riskCalc](data, weights, alphatest);
-      logger.info('VaR is ' + result)
+      logger.info(method + 'VaR is: ' + result)
       resolve(Buffer.from(result));
     }
     catch (e) {
