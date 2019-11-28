@@ -6,6 +6,9 @@
   ],
   "dependencies":["oracle-dapp-service"],
   "install":{
+    "contracts":{
+      "riskconsumer": true
+    },
     "npm":{
       "riskjs": true,
       "axios": true
