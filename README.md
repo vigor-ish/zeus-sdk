@@ -4,7 +4,7 @@ by VIGORish team to the DAPP Network Global Hackathon 2019
 
 ### Check our submission on branch `vigorish`
 
-Our code is in this repository under the branch [vigorish](https://github.com/vigor-ish/zeus-sdk/tree/vigorish) and you can then move to the folder [/boxes/groups/vigorish/](https://github.com/vigor-ish/zeus-sdk/tree/vigorish/boxes/groups/vigorish) to check out our work.
+Our code is in this repository under the branch [vigorish](https://github.com/vigorstablecoin/liquid-risk/tree/vigorish) and you can then move to the folder [/boxes/groups/vigorish/](https://github.com/vigorstablecoin/liquid-risk/tree/vigorish/boxes/groups/vigorish) to check out our work.
 
 ### Installation
 
