@@ -10,7 +10,7 @@
   },
   "dependencies":[
     "templates-emptycontract-eos-cpp",
-    "frontend-vigorish",
+    "frontend-risk",
     "oracle-risk"
   ],
   "hooks": {
