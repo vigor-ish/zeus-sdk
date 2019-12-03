@@ -6,10 +6,14 @@
   ],
   "commands": {
     "Create contract from template": "zeus create contract somecontract",
-    "help for create-contract": "zeus create contract somecontract --help"
+    "help for create-contract": "zeus create contract --help"
   },
   "dependencies":[
-    "templates-emptycontract-eos-cpp",
+    "seed-eos",
+    "hooks-npm",
+    "hooks-cpp-contracts",
+    "mocha",
+    "seed-models",
     "frontend-risk",
     "oracle-risk"
   ],
